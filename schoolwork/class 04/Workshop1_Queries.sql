@@ -1,34 +1,47 @@
-Select Sum(TotalPrice)
-From Orders
-
 --Commented queries are additional
 
---Select Count(*)
---From Customers
+--Calculate the total amount on all orders in the system
+SELECT SUM(TotalPrice)
+FROM Orders
 
---Select STRING_AGG([Name], ' ,')
---From Customers
+--SELECT COUNT(*)
+--FROM Customers
 
-Select b.Id, b.[Name], Sum(o.TotalPrice)
-From Orders as o
-Inner Join BusinessEntities as b ON o.BusinessEntityId = b.Id
-Group by b.Id, b.[Name]
+--SELECT STRING_AGG([Name], ' ,')
+--FROM Customers
 
-Select b.Id
-	,b.[Name]
-	,Sum(o.TotalPrice)
-From Orders as o
-Inner Join BusinessEntities as b ON o.BusinessEntityId = b.Id
-Group by b.Id
-		,b.Name
+--Calculate the total amount per BusinessEntity on all orders in the system
+SELECT be.Id
+	,be.[Name]
+	,SUM(o.TotalPrice)
+FROM Orders o
+INNER JOIN BusinessEntities be ON o.BusinessEntityId = be.Id
+GROUP BY be.Id
+	,be.[Name]
 
-Select b.Id, b.[Name], Max(o.TotalPrice) as MaxPrice, AVG(TotalPrice) as AvgPrice
-From Orders as o
-Inner Join BusinessEntities as b ON o.BusinessEntityId = b.Id
-Group by b.Id, b.Name
+--Calculate the total amount per BusinessEntity on all orders in the system from Customers with ID < 20
+SELECT be.Id
+	,be.[Name]
+	,SUM(o.TotalPrice)
+FROM Orders o
+INNER JOIN BusinessEntities be ON o.BusinessEntityId = be.Id
+WHERE o.CustomerId < 20
+GROUP BY be.Id
+	,be.[Name]
 
-Select c.Id, c.[Name], STRING_AGG(e.FirstName + ' ' + e.LastName, ' ,')
-From Orders as o
-Inner Join Customers as c ON o.CustomerId = c.Id
-Inner Join Employees as e ON o.CustomerId = e.Id
-Group by c.Id, c.[Name]
+--Find the Maximal Order amount, and the Average Order amount per BusinessEntity on all orders in the system
+SELECT be.Id
+	,be.[Name]
+	,MAX(o.TotalPrice) AS MaxPrice
+	,AVG(o.TotalPrice) AS AvgPrice
+FROM Orders o
+INNER JOIN BusinessEntities be ON o.BusinessEntityId = be.Id
+GROUP BY be.Id
+	,be.[Name]
+
+
+SELECT c.Id, c.[Name], STRING_AGG(e.FirstName + ' ' + e.LastName, ' ,')
+FROM Orders o
+INNER JOIN Customers c ON o.CustomerId = c.Id
+INNER JOIN Employees e ON o.EmployeeId = e.Id
+GROUP BY c.Id, c.[Name]
