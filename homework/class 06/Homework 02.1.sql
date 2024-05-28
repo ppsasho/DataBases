@@ -33,7 +33,7 @@ Begin
 		   Select StudentID, s.[FirstName], s.LastName, Count(Grade) as TotalGrades
 		   From Grade as g
 		   Inner join Student as s on s.ID = @StudentId
-		   Where StudentID = 1
+		   Where StudentID = @StudentId
 		   group by StudentID, s.[FirstName], s.LastName
 
 -- Procedure should return second resultset with the MAX Grade of all
