@@ -1,15 +1,11 @@
 -- Create new procedure called CreateGradeDetail;
--- Procedure should add details for specific Grade (new record for new
--- AchievementTypeID, Points, MaxPoints, Date for specific Grade);
--- Output from this procedure should be resultset with SUM of
--- GradePoints calculated with formula
--- AchievementPoints/AchievementMaxPoints*ParticipationRate for
--- specific 
 
 Create procedure dbo.CreateGradeDetail(@GradeID int, @AchievementTypeID int, @AchievementPoints int, @AchievementMaxPoints int)
 As
 Begin
-
+-- Procedure should add details for specific Grade (new record for new
+-- AchievementTypeID, Points, MaxPoints, Date for specific Grade);
+	
 	INSERT INTO [dbo].[GradeDetails]
            ([GradeID]
            ,[AchievementTypeID]
@@ -24,6 +20,10 @@ Begin
 		,@AchievementMaxPoints
 		,GETDATE())
 
+-- Output from this procedure should be resultset with SUM of
+-- GradePoints calculated with formula
+-- AchievementPoints/AchievementMaxPoints*ParticipationRate for
+-- specific 
 	Declare @GradePoints int
 	Select @GradePoints = (@AchievementPoints / @AchievementMaxPoints) * a.ParticipationRate
 	From AchievementType as a
