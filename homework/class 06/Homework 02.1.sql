@@ -6,8 +6,7 @@ Create procedure dbo.sp_CreateGrade(
 	,@CourseId int
 	,@TeacherId int
 	,@Grade int
-	,@Comment nvarchar(200)
-	,@CreatedDate date)
+	,@Comment nvarchar(200))
 
 	As
 
@@ -26,7 +25,7 @@ Begin
            ,@TeacherId
            ,@Grade
            ,@Comment
-           ,@CreatedDate)
+           ,GetDate())
 
 -- Procedure should return the total number of grades in the system for
 -- the Student on input (from the CreateGrade);
